@@ -61,6 +61,20 @@
 
 ------
 
-## SF Symbol
+## SF Symbol | 图标
 
 - `Image(systemName: "creditcard")`
+
+
+
+## Binding | 数据绑定
+
+```swift
+/* main view */
+@State var show = false
+MenuView(show : $show)  //$使得同步变化
+
+/* subview */
+@Binding var show : Bool    //从主组建那里监听show
+```
+
