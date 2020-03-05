@@ -85,4 +85,22 @@ Button(action: { self.show.toggle() }) {
   }
   ```
 
+- 3D水平移动动画
+
+   `geometry.frame(in: .global)` : get frame value from my card(position size)
+
+  ```swift
+  .rotation3DEffect(Angle(degrees:
+      Double(geometry.frame(in: .global).minX - 30)   / -20
+  ), axis: (x: 0, y: 10.0, z: 0))
+  ```
+
+  ```swift
+  .rotation3DEffect(Angle(degrees:
+     Double(geometry.frame(in: .global).minX )
+  ), axis: (x: 10.0, y: 10.0, z: 10.0))
+  ```
+
+  <img src="https://upload-images.jianshu.io/upload_images/12014150-a1595d73fe086816.gif?imageMogr2/auto-orient/strip" alt="3Dscroll1.gif" width="25%;" /><img src="https://upload-images.jianshu.io/upload_images/12014150-23d538cfb9777813.gif?imageMogr2/auto-orient/strip" alt="3Dscroll2.gif" width="25%;" />
+
   
