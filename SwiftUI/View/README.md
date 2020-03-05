@@ -40,7 +40,9 @@ Button(action: { self.show.toggle() }) {
 }
 ```
 
-<img src="https://upload-images.jianshu.io/upload_images/12014150-5c56f18ab03a889d.gif?imageMogr2/auto-orient/strip" alt="menu.gif" width="25%;" /><img src="ScreenShots/bottomcard.png" alt="image-20200305171749599" width="25%;" />
+<img src="https://upload-images.jianshu.io/upload_images/12014150-5c56f18ab03a889d.gif?imageMogr2/auto-orient/strip" alt="menu.gif" width="25%;" />
+
+![BottomMenu.gif](https://upload-images.jianshu.io/upload_images/12014150-702551d3cc5fd559.gif?imageMogr2/auto-orient/strip)
 
 ## 底部菜单
 

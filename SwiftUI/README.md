@@ -30,6 +30,18 @@
   - `aspectRatio()`：填充方式
   - `.clipShape(Circle())`: 将图片裁剪为avatar
 
+- **按钮**
+
+  ```swift
+  /* 图像按钮 */
+  Button(action: { self.showProfile.toggle() }) {
+    Image("Avatar")
+    .renderingMode(.original)       //使得button里的图像渲染正常
+  }
+  ```
+
+  
+
 ------
 
 ## Animation
