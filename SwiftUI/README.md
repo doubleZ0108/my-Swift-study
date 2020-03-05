@@ -40,7 +40,7 @@
   }
   ```
 
-  
+- **屏幕尺寸**: `let screen = UIScreen.main.bounds`
 
 ------
 
@@ -202,12 +202,35 @@ var icon: String = "gear"
 
 ### Binding | 数据绑定
 
-```swift
-/* main view */
-@State var show = false
-MenuView(show : $show)  //$使得同步变化
+- 同一个文件中
 
-/* subview */
-@Binding var show : Bool    //从主组建那里监听show
-```
+  ```swift
+  /* main view */
+  @State var show = false
+  MenuView(show : $show)  //$使得同步变化
+  
+  /* subview */
+  @Binding var show : Bool    //从主组建那里监听show
+  ```
+
+- 不同文件间
+
+  ```swift
+  /* 状态定义在A中，文件A里调用文件B里的View */
+  /* A */
+  @State var viewState = CGSize.zero
+  HomeView(showProfile: $showProfile)
+  
+  /* B */
+  @Binding var showProfile : Bool
+  AvatarView(showProfile: $showProfile)
+  
+  struct HomeView_Previews: PreviewProvider {
+      static var previews: some View {
+          HomeView(showProfile: .constant(false))
+      }
+  }
+  ```
+
+  
 

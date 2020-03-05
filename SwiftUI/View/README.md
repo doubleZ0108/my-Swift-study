@@ -4,6 +4,33 @@
 
 ------
 
+## 小组件
+
+### 进度条
+
+<img src="ScreenShots/progressbar.png" alt="image-20200305171922130" width="50%;" />
+
+```swift
+Color.white
+  .frame(width: 38, height: 6)
+  .cornerRadius(3)
+  .frame(width: 130, height: 6, alignment: .leading)
+  .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.08))
+  .cornerRadius(3)
+  .padding()
+  .frame(width: 150, height: 24)
+  .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.1))
+  .cornerRadius(12)
+```
+
+
+
+
+
+
+
+------
+
 ## 钱包card
 
 - single card
@@ -40,27 +67,22 @@ Button(action: { self.show.toggle() }) {
 }
 ```
 
-<img src="https://upload-images.jianshu.io/upload_images/12014150-5c56f18ab03a889d.gif?imageMogr2/auto-orient/strip" alt="menu.gif" width="25%;" />
+<img src="https://upload-images.jianshu.io/upload_images/12014150-5c56f18ab03a889d.gif?imageMogr2/auto-orient/strip" alt="menu.gif" width="25%;" /><img src="https://upload-images.jianshu.io/upload_images/12014150-702551d3cc5fd559.gif?imageMogr2/auto-orient/strip" width="25%" /><img src="https://upload-images.jianshu.io/upload_images/12014150-8dae087797468351.gif?imageMogr2/auto-orient/strip" width="25%" />
 
-![BottomMenu.gif](https://upload-images.jianshu.io/upload_images/12014150-702551d3cc5fd559.gif?imageMogr2/auto-orient/strip)
+------
 
-## 底部菜单
+## ScrollView
 
-- 进度条
-
-  <img src="ScreenShots/progressbar.png" alt="image-20200305171922130" width="50%;" />
+- 水平移动卡片
 
   ```swift
-  Color.white
-    .frame(width: 38, height: 6)
-    .cornerRadius(3)
-    .frame(width: 130, height: 6, alignment: .leading)
-    .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.08))
-    .cornerRadius(3)
-    .padding()
-    .frame(width: 150, height: 24)
-    .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.1))
-    .cornerRadius(12)
+  ScrollView(.horizontal, showsIndicators: false) {	//第二个参数不显示滚动小条AS
+    HStack {
+      ForEach(0 ..< 5) { item in
+                        SectionView()
+      }
+    }
+  }
   ```
 
   
