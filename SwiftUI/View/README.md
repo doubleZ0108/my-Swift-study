@@ -40,4 +40,25 @@ Button(action: { self.show.toggle() }) {
 }
 ```
 
-<img src="https://upload-images.jianshu.io/upload_images/12014150-5c56f18ab03a889d.gif?imageMogr2/auto-orient/strip" alt="menu.gif" width="25%;" />
+<img src="https://upload-images.jianshu.io/upload_images/12014150-5c56f18ab03a889d.gif?imageMogr2/auto-orient/strip" alt="menu.gif" width="25%;" /><img src="ScreenShots/bottomcard.png" alt="image-20200305171749599" width="25%;" />
+
+## 底部菜单
+
+- 进度条
+
+  <img src="ScreenShots/progressbar.png" alt="image-20200305171922130" width="50%;" />
+
+  ```swift
+  Color.white
+    .frame(width: 38, height: 6)
+    .cornerRadius(3)
+    .frame(width: 130, height: 6, alignment: .leading)
+    .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.08))
+    .cornerRadius(3)
+    .padding()
+    .frame(width: 150, height: 24)
+    .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.1))
+    .cornerRadius(12)
+  ```
+
+  

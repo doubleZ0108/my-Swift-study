@@ -6,7 +6,29 @@
 
 ## View
 
+- **精细的圆角**: `.clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))`
 
+- **精细的阴影**：`.shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 20)`
+
+  - 比较常用的配置是（10，0，0）或（20，0，20）
+
+- **渐变颜色**：`Gradient`
+
+  - Linear
+  - Angular
+  - Radial
+
+  <img src="View/ScreenShots/gradient.png" alt="image-20200305165931245" width="25%;" />
+
+- **颜色方块**：`Color(Color Literal)`
+
+- **覆盖物**: `overlay()`
+
+- **图像**
+
+  - `resizeable()`：让图片可以被调整
+  - `aspectRatio()`：填充方式
+  - `.clipShape(Circle())`: 将图片裁剪为avatar
 
 ------
 
@@ -131,17 +153,42 @@
 
 
 
+------
 
+## Font
+
+- `.font(.system(size: 20, weight: .blod, design: .default))`
+- 
 
 ------
 
 ## SF Symbol | 图标
 
 - `Image(systemName: "creditcard")`
+- `.imageScale(.large)`
 
 
 
-## Binding | 数据绑定
+------
+
+## 数据
+
+### 数据传递
+
+```swift
+/* main view */
+MenuView(title: "title param", icon: "icon param")
+
+/* subview */
+var title: String		//当不指定默认值时必须要传递
+var icon: String = "gear"
+```
+
+
+
+
+
+### Binding | 数据绑定
 
 ```swift
 /* main view */
