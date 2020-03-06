@@ -22,7 +22,7 @@
 
 - **颜色方块**：`Color(Color Literal)`
 
-- 图像方块: `Image(uiImage: Image Literal)`
+- **图像方块**: `Image(uiImage: Image Literal)`
 
 - **覆盖物**: `overlay()`
 
