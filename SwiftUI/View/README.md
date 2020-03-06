@@ -267,13 +267,15 @@ Button(action: { self.show.toggle() }) {
 
 ## ScrollView
 
+- 会限制范围，所以要ignore safe area
+
 - 水平移动卡片
 
   ```swift
   ScrollView(.horizontal, showsIndicators: false) {	//第二个参数不显示滚动小条AS
     HStack {
       ForEach(0 ..< 5) { item in
-                        SectionView()
+          SectionView()
       }
     }
   }
@@ -299,4 +301,5 @@ Button(action: { self.show.toggle() }) {
 
   
 
-## 
+##全屏扩展
+
