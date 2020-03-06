@@ -6,6 +6,24 @@
 
 ## 小组件
 
+### 退出小圆圈
+
+```swift
+Image(systemName: "xmark")
+  .frame(width: 36, height: 36)
+  .foregroundColor(.white)
+  .background(Color.black)
+  .clipShape(Circle())
+```
+
+```swift
+/* 从屏幕上方进入动画 */
+.transition(.move(edge: .top))
+.animation(.spring(response: 0.6, dampingFraction: 0.8, blendDuration: 0))
+```
+
+<img src="https://upload-images.jianshu.io/upload_images/12014150-2875a662ed609e5e.gif?imageMogr2/auto-orient/strip" alt="quitbutton.gif" width="50%;" />
+
 ### 卡片小把手
 
 ```swift

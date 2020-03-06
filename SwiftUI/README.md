@@ -53,6 +53,19 @@
   }
   ```
 
+- **好看的背景过渡颜色**
+
+  ```swift
+  .background(
+    VStack {
+      LinearGradient(gradient: Gradient(colors: [Color("background_gradient"), Color.white]), startPoint: .top, endPoint: .bottom)
+      .frame(height: 200)
+      Spacer()
+    }
+    .background(Color.white)
+  )
+  ```
+
   
 
 ------
@@ -297,7 +310,16 @@ var icon: String = "gear"
 
   <img src="View/ScreenShots/sheet.png" alt="image-20200305231159749" width="25%;" />
 
+- 根据状态显示页面，达到页面切换的效果
 
+  ```swift
+  if showContent{
+    Color.white.edgesIgnoringSafeArea(.all)
+    ContentView()
+  }
+  ```
+
+  
 
 ------
 
