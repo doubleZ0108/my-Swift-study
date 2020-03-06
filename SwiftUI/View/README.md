@@ -25,6 +25,93 @@ Color.white
 
 
 
+### 动态Navigator
+
+- Navigation View
+
+<img src="https://upload-images.jianshu.io/upload_images/12014150-f91d2b59b91c02a6.gif?imageMogr2/auto-orient/strip" width="25%" /><img src="https://upload-images.jianshu.io/upload_images/12014150-d67432e1aa8848a6.gif?imageMogr2/auto-orient/strip" width="25%" />
+
+```swift
+/* UpdateList */
+@ObservedObject var store = UpdateStore()
+    
+func addUpdate() {
+  store.updates.append(Update(image: "Card1", title: "New Item", text: "New Text", data: "Jan New"))
+}
+
+NavigationView {
+  List{
+    /* 多项item */
+    ForEach(store.updates) { update in
+        NavigationLink(destination: UpdateDetail(update: update)) {
+                              //View
+        }
+    }
+
+    /* 右扫删除API */
+    .onDelete{ index in
+              self.store.updates.remove(at: index.first!)     //forcing the data is not option
+    }
+    /* Edit模式下排序 */
+    .onMove{ (source: IndexSet, destination: Int) in
+            self.store.updates.move(fromOffsets: source, toOffset: destination)
+    }
+  }
+  /* Navigator主标题（会传递到下一层）*/
+  .navigationBarTitle(Text("One"))
+  /* Navigator左上角的addupdate 和 右上角的Edit*/
+  .navigationBarItems(
+    leading: Button(action: addUpdate) {
+      Text("Add One")
+    },
+    trailing: EditButton()
+  )
+}
+
+```
+
+```swift
+/* UpdateDetail */
+var update : Update
+
+ScrollView {		//跳转后的界面有系统滑动特效
+  VStack {
+    Image(update.image)
+    .resizable()
+    .aspectRatio(contentMode: .fit)
+    .frame(maxWidth: .infinity)
+
+    Text(update.text)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(.horizontal, 20)
+  }
+  .navigationBarTitle(update.title)   //navigator导航的文字
+}
+.listStyle(GroupedListStyle())	//DefaultListStyle PlainListStyle
+```
+
+```swift
+/* UpdateStore */
+import Combine
+
+struct Update: Identifiable{
+    var id = UUID()
+    var image: String
+    var title: String
+    var text: String
+    var data: String
+}
+
+let updateData = [
+    Update(image: "Card1", title: "SwiftUI11", text: "...", data: "Jan 1"),
+		//...
+]
+
+class UpdateStore: ObservableObject{
+    @Published var updates: [Update] = updateData
+}
+```
+
 
 
 

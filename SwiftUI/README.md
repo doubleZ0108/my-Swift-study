@@ -236,3 +236,17 @@ var icon: String = "gear"
 
   
 
+------
+
+## 页面切换
+
+- 系统页面present: 以上方卡片的方式呈现，有包括退出的默认手势，但是很多自定义的东西无法响应
+
+  ```swift
+  .sheet(isPresented: $showUpdate){
+    ContentView()
+  }
+  ```
+
+  <img src="View/ScreenShots/sheet.png" alt="image-20200305231159749" width="25%;" />
+
