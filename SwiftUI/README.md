@@ -44,6 +44,17 @@
 
 - **屏幕尺寸**: `let screen = UIScreen.main.bounds`
 
+- **同时预览多个设备**
+
+  ```swift
+  Group {
+    TabBar().previewDevice("iPhone 8")
+    TabBar().previewDevice("iPhone 11")
+  }
+  ```
+
+  
+
 ------
 
 ## Animation
@@ -249,4 +260,20 @@ var icon: String = "gear"
   ```
 
   <img src="View/ScreenShots/sheet.png" alt="image-20200305231159749" width="25%;" />
+
+
+
+------
+
+## TabBar
+
+```swift
+TabView {
+  Home().tabItem{
+    Text("Home")
+    Image(systemName: "play.circle.fill")
+  }
+}
+.edgesIgnoringSafeArea(.top)
+```
 
