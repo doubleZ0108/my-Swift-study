@@ -6,6 +6,17 @@
 
 ## 小组件
 
+### 卡片小把手
+
+```swift
+Rectangle()
+  .frame(width: 40, height: 5)
+  .cornerRadius(3)
+  .opacity(0.2)
+```
+
+<img src="ScreenShots/handle.png" alt="image-20200306191259368" width="50%;" />
+
 ### 进度条
 
 <img src="ScreenShots/progressbar.png" alt="image-20200305171922130" width="50%;" />
@@ -60,6 +71,8 @@ struct RingView: View {
       .frame(width: width, height: height)
       .shadow(color: Color(color2).opacity(0.1), radius: 3 * multiplier, x: 0, y: 3 * multiplier)
 
+      //                .animation(.easeInOut)    //在外部使用的时候定义动画
+      
       Text("\(Int(percent))%")
       .font(.system(size: 14 * multiplier))
       .fontWeight(.bold)
@@ -184,6 +197,33 @@ class UpdateStore: ObservableObject{
   > Rectangle, opacity, VStack(spacing: 20)
 
 <br/>
+
+## 底部卡片
+
+```swift
+VStack(spacing:20) {
+  Rectangle()
+  .frame(width: 40, height: 5)
+  .cornerRadius(3)
+  .opacity(0.2)
+
+  Text("test")
+  .font(.subheadline)
+  .multilineTextAlignment(.center)
+  .lineSpacing(4)
+  Spacer()
+}
+.padding(.top, 8)
+.padding(.horizontal, 20)
+.frame(maxWidth: .infinity)
+.background(Color.white)
+.cornerRadius(30)
+.shadow(radius: 20)
+```
+
+<img src="ScreenShots/bottomcard.png" alt="image-20200306191131866" width="25%;" />
+
+
 
 ## Menu菜单
 

@@ -57,6 +57,33 @@
 
 ------
 
+## Modifier
+
+- 自定义（组合拳）
+
+  ```swift
+  /* usage */
+  .modifier(ShadowModifier())
+  
+  /* define */
+  import SwiftUI
+  
+  struct ShadowModifier: ViewModifier{
+      func body(content: Content) -> some View{
+          content
+        			//这里是自定义的modifier
+              .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 20)
+              .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
+      }
+  }
+  ```
+
+  
+
+
+
+------
+
 ## Animation
 
 - 基本用法
@@ -93,7 +120,7 @@
   )
   ```
 
-  
+- 最里层的动画先执行，所以父亲再添加动画不会覆盖掉子的
 
 
 
@@ -183,7 +210,16 @@
 ## Font
 
 - `.font(.system(size: 20, weight: .blod, design: .default))`
-- 
+
+- 安装自定义字体
+
+  1. 将字体文件夹拖入目录中
+
+     <img src="View/ScreenShots/customfont.png" alt="image-20200306202609046" style="zoom:50%;" />
+
+  2. `Info.plist`中填写要使用的`.ttf`
+
+     <img src="View/ScreenShots/customfont2.png" alt="image-20200306202912644" style="zoom:50%;" />
 
 ------
 
