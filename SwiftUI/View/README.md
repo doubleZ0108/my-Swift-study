@@ -303,3 +303,4 @@ Button(action: { self.show.toggle() }) {
 
 ##全屏扩展
 
+<img src="https://upload-images.jianshu.io/upload_images/12014150-7c762a9ed0c71d74.gif?imageMogr2/auto-orient/strip" width="25%" />
