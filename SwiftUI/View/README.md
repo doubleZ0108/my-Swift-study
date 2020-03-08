@@ -301,6 +301,54 @@ Button(action: { self.show.toggle() }) {
 
   
 
-##全屏扩展
+##全屏 FullView
 
-<img src="https://upload-images.jianshu.io/upload_images/12014150-7c762a9ed0c71d74.gif?imageMogr2/auto-orient/strip" width="25%" />
+<img src="https://upload-images.jianshu.io/upload_images/12014150-7c762a9ed0c71d74.gif?imageMogr2/auto-orient/strip" width="25%" /><img src="https://upload-images.jianshu.io/upload_images/12014150-563a471306785127.gif?imageMogr2/auto-orient/strip" width="25%" /><img src="https://upload-images.jianshu.io/upload_images/12014150-0453baefdfede1d9.gif?imageMogr2/auto-orient/strip" width="25%" /><img src="https://upload-images.jianshu.io/upload_images/12014150-da8dd33d800bdf9d.gif?imageMogr2/auto-orient/strip" width="25%" />
+
+- **点击卡片变为全屏**
+
+  ```swift
+  //部分代码
+  ForEach(courses.indices, id: \.self) { index in     //按照index遍历
+      GeometryReader { geometry in
+           //View
+             .offset(y: self.courses[index].show ? -geometry.frame(in: .global).minY : 0)      //其他card full时也从顶端开始
+      }
+          .frame(height: 280)
+          .frame(maxWidth: self.courses[index].show ? .infinity : screen.width - 60)
+          .zIndex(self.courses[index].show ? 1 : 0)   //show状态的卡片处于上层
+  }
+  ```
+
+- **向下拖拽卡片缩放退出**
+
+  ```swift
+  @State var activeView = CGSize.zero
+  
+  .gesture(
+    show ?			//只有当fullview时才绑定手势操作
+    DragGesture().onChanged{ value in
+       guard value.translation.height < 300 else { return }    //return mean stop running the code from here
+       guard value.translation.height > 0 else { return }
+       self.activeView = value.translation
+    }
+    .onEnded{ value in
+             if self.activeView.height > 50{
+               self.show = false
+               self.active = false
+               self.activeIndex = -1
+             }
+             self.activeView = .zero
+            }
+    : nil		//否则nil
+  )
+  
+  .scaleEffect(1 - self.activeView.height / 1000)		//平面缩放
+  .rotation3DEffect(Angle(degrees: Double(self.activeView.height / 10)), axis: (x: 0, y: 10.0, z: 0))		//三维旋转
+  .hueRotation(Angle(degrees: Double(self.activeView.height)))	//颜色变化
+  
+  // Color.black.opacity(Double(self.activeView.height / 500))		//背景变换颜色
+  ```
+
+  
+

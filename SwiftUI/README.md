@@ -66,7 +66,9 @@
   )
   ```
 
-- **隐藏刘海中的内容**：`.statusBar(hidden: **true**)`
+- **隐藏刘海中的内容**：`.statusBar(hidden: true)`
+
+- **颜色变化**：`.hueRotation(Angle(degrees: ))`
 
 ------
 
@@ -246,6 +248,20 @@
 ------
 
 ## 数据
+
+### 遍历
+
+- 按照索引遍历
+
+  ```swift
+  ForEach(courses.indices, id: \.self) { index in
+  	//...
+  }
+  ```
+
+  
+
+
 
 ### 数据传递
 
