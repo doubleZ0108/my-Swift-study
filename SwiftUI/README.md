@@ -310,7 +310,58 @@ var icon: String = "gear"
   }
   ```
 
+
+
+
+### API and JSON
+
+- 获取数据
+
+  ```swift
+  struct Post: Codable, Identifiable {
+      let id = UUID()
+      var title: String
+      var body: String
+  }
   
+  class Api {
+      func getPosts(completion: @escaping ([Post]) -> ()) {
+          guard let url = URL(string: "http://jsonplaceholder.typicode.com/posts") else { return }
+          
+          URLSession.shared.dataTask(with: url) { (data, _, _) in
+              let posts = try! JSONDecoder().decode([Post].self, from: data!)
+              
+              DispatchQueue.main.async {      //不用等到全获取再返回
+                  completion(posts)
+              }
+              print(posts)
+          }
+          .resume()
+      }
+  }
+  ```
+
+- 使用数据
+
+  ```swift
+  @State var posts: [Post] = []
+  List(posts) { post in
+     Text(post.title)
+  }
+  .onAppear{
+    Api().getPosts { (posts) in
+       self.posts = posts
+    }
+  }
+  ```
+
+  
+
+> **如果报错无法访问API等问题**
+>
+> <img src="View/ScreenShots/apisetting.png" alt="image-20200309191558276" style="zoom:50%;" />
+
+
 
 ------
 
