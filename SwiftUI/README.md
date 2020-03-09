@@ -315,9 +315,10 @@ var icon: String = "gear"
 
 ### API and JSON
 
-- 获取数据
+- **获取数据**
 
   ```swift
+  /* View */
   struct Post: Codable, Identifiable {
       let id = UUID()
       var title: String
@@ -329,7 +330,9 @@ var icon: String = "gear"
           guard let url = URL(string: "http://jsonplaceholder.typicode.com/posts") else { return }
           
           URLSession.shared.dataTask(with: url) { (data, _, _) in
-              let posts = try! JSONDecoder().decode([Post].self, from: data!)
+              guard let data = data else { return }
+              
+              let posts = try! JSONDecoder().decode([Post].self, from: data)
               
               DispatchQueue.main.async {      //不用等到全获取再返回
                   completion(posts)
@@ -341,9 +344,10 @@ var icon: String = "gear"
   }
   ```
 
-- 使用数据
+- **使用数据**
 
   ```swift
+  /* Data */
   @State var posts: [Post] = []
   List(posts) { post in
      Text(post.title)
@@ -351,6 +355,38 @@ var icon: String = "gear"
   .onAppear{
     Api().getPosts { (posts) in
        self.posts = posts
+    }
+  }
+  ```
+
+- **Combine方式使用数据**
+
+  ```swift
+  /* DataStore */
+  import Combine
+  
+  class DataStore: ObservableObject {
+      @Published var posts: [Post] = []
+      
+      init() {
+          getPosts()
+      }
+      
+      func getPosts() {
+          Api().getPosts { (posts) in
+              self.posts = posts
+          }
+      }
+  }
+  ```
+
+  ```swift
+  /* View */
+  @ObservedObject var store = DataStore()
+      
+  var body: some View {
+    List(store.posts) { post in
+      Text(post.title)
     }
   }
   ```
