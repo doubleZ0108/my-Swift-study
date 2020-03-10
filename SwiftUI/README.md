@@ -391,13 +391,76 @@ var icon: String = "gear"
   }
   ```
 
-  
-
 > **如果报错无法访问API等问题**
 >
 > <img src="View/ScreenShots/apisetting.png" alt="image-20200309191558276" style="zoom:50%;" />
 
 
+
+### Contentful API
+
+自定义动态数据，每次修改不需要release一个新版本
+
+- [Contentful网站](https://www.contentful.com)填写数据
+
+  1. 创建**Content Mode** 
+     - add field
+  2. 填写**Content**
+     - add Entry
+  3. **Setting - API keys**
+     - space id
+     - access token
+
+- 使用数据
+
+  ```swift
+  /* Store */
+  import Contentful
+  import Combine
+  
+  let client = Client(spaceId: "", accessToken: "")			//(3)获取的两项
+  
+  func getArray(id: String, completion: @escaping([Entry]) -> ()) {
+      let query = Query.where(contentTypeId: id)        //content model
+      
+      client.fetchArray(of: Entry.self, matching: query) { result in
+          switch result {
+          case .success(let array):
+              DispatchQueue.main.async {
+                  completion(array.items)
+              }
+          case .error(let error):
+              print(error)
+          }
+      }
+  }
+  
+  class CourseStore: ObservableObject {
+      @Published var courses: [Course] = courseData		//默认值
+      
+      init() {
+          getArray(id: "course") { (items) in		//（1）的model名
+              items.forEach { (item) in
+                  /* 使用数据 */
+                  self.courses.append(Course(
+                      title: item.fields["title"] as! String,		//（1）field名
+                      subtitle: item.fields["subtitle"] as! String
+                  )
+                  )
+              }
+          }
+      }
+  }
+  ```
+
+  ```swift
+  /* View */
+  @ObservedObject var store = CourseStore()
+  
+  store.courses		//即为动态数据
+  ```
+
+  
 
 ------
 
