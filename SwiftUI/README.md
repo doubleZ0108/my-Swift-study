@@ -514,7 +514,25 @@ TabView {
     Text("Home")
     Image(systemName: "play.circle.fill")
   }
+  ContentView().tabItem{
+     Image(systemName: "rectangle.stack.fill")
+     Text("Cards")
+  }
 }
 .edgesIgnoringSafeArea(.top)
 ```
 
+
+
+------
+
+## 暗黑模式
+
+- 调整为暗黑模式
+
+  ```swift
+  //在XxxView_Preview()里设置
+  XxxView().environment(\.colorScheme, .dark)
+  ```
+
+  
