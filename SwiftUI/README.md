@@ -22,15 +22,7 @@
 
 - **颜色方块**：`Color(Color Literal)`
 
-- **图像方块**: `Image(uiImage: Image Literal)`
-
 - **覆盖物**: `overlay()`
-
-- **图像**
-
-  - `resizeable()`：让图片可以被调整
-  - `aspectRatio()`：填充方式
-  - `.clipShape(Circle())`: 将图片裁剪为avatar
 
 - **按钮**
 
@@ -238,10 +230,32 @@
 
 ------
 
-## SF Symbol | 图标
+## Image
+
+- **图像方块**: `Image(uiImage: Image Literal)`
+
+- `resizeable()`：让图片可以被调整
+- `aspectRatio()`：填充方式
+- `.clipShape(Circle())`: 将图片裁剪为avatar
+
+
+
+### SF Symbol | 图标
 
 - `Image(systemName: "creditcard")`
 - `.imageScale(.large)`
+
+
+
+### SDWebImage 网络图像
+
+https://github.com/SDWebImage/SDWebImageSwiftUI.git
+
+```swift
+import SDWebImageSwiftUI
+
+WebImage(url: URL(string: "https://..."))
+```
 
 
 
@@ -399,6 +413,8 @@ var icon: String = "gear"
 
 ### Contentful API
 
+https://github.com/contentful/contentful.swift.git
+
 自定义动态数据，每次修改不需要release一个新版本
 
 - [Contentful网站](https://www.contentful.com)填写数据
@@ -445,6 +461,7 @@ var icon: String = "gear"
                   self.courses.append(Course(
                       title: item.fields["title"] as! String,		//（1）field名
                       subtitle: item.fields["subtitle"] as! String
+                    	image: item.fields.linkedAsset(at: "image")?.url ?? URL(string: "")!,   //如果没有值的缺省值 ！！image的类型为URL
                   )
                   )
               }
