@@ -14,7 +14,7 @@
   }
   ```
 
-- ?
+- nil: optional not set
 
   ```swift
   let xx = XXX!		//一定有有效值，否则程序崩溃
