@@ -166,6 +166,29 @@
 
   - `[Int:String]`
 
+- **String**
+
+  - 不是通过Int进行索引，而是`String.Index`(有些字符不止用一位来存储)
+
+    > 🌰. 获取第四个字符
+    >
+    > ```swift
+    > str[str.index(str.startIndex, offsetBy: 3)]
+    > ```
+    >
+    > 🌰. 获取第二个词
+    >
+    > ```swift
+    > if let firstSpace = str.index(of: " "){
+    >   let secondWordIndex = str.index(firstSpace, offsetBy: 1)
+    >   let secondWofd = str[secondWordIndex..<str.endIndex]
+    > }
+    > 
+    > str.components(separatedBy: " ")[1]
+    > ```
+
+  - 将字符串转化为字符数组: `Array(str)`, 类型是`Array<Character>`
+
 
 
 ## Object Oriented
@@ -251,7 +274,7 @@ func SomeAndAnother(x: SomeProtocol & AnotherProtocol) {} 	//这个参数必须�
 
   <img src="ScreenShots/protocoldelegation.png" alt="image-20200316230643574" width="70%;" />
 
-> 例. **Equatable**: Swift中 x == y其实就是区找这个协议，任何实现了这个协议的class/struct都可以使用==（Int类型也是如此）
+> 🌰. **Equatable**: Swift中 x == y其实就是区找这个协议，任何实现了这个协议的class/struct都可以使用==（Int类型也是如此）
 >
 > ```swift
 > protocol Equatable {
@@ -259,7 +282,7 @@ func SomeAndAnother(x: SomeProtocol & AnotherProtocol) {} 	//这个参数必须�
 > }
 > ```
 >
-> 例. **Hashable**
+> 🌰. **Hashable**
 >
 > ```swift 
 > protocol Hashable: Equatable {
@@ -269,9 +292,9 @@ func SomeAndAnother(x: SomeProtocol & AnotherProtocol) {} 	//这个参数必须�
 >
 > **让自定义类型作为字典的key**：只需实现Hashable协议
 >
-> 例. **Sequence**：实现这个协议的data struct可以使用`for in`, `contains()`, `min()`, `filter()`,`map()`, etc.
+> 🌰. **Sequence**：实现这个协议的data struct可以使用`for in`, `contains()`, `min()`, `filter()`,`map()`, etc.
 >
-> 例. **Collection**: 实现这个协议的data struct可以使用 `[]`, `index(of: )`, etc.
+> 🌰. **Collection**: 实现这个协议的data struct可以使用 `[]`, `index(of: )`, etc.
 
 <br />
 
