@@ -1,4 +1,4 @@
-# Swift知识点🧀️
+
 
 [toc]
 
@@ -162,17 +162,13 @@
     let greet = hello ?? "foo"
     ```
 
-    
+- **字典**
+
+  - `[Int:String]`
 
 
 
-## 类
-
-> **class和struct的区别**
->
-> 1. struct没有inheritance
-> 2. struct is value type, class is reference type
->    - value type: 参数、数组成员、赋值时会被copy（系统采用COW机制）
+## Object Oriented
 
 - **Access Control**：对外承认这个东西你可以用，保证没问题，内部的实现你可以不断的更改
   - `internal`：（default）usable by any object in my app
@@ -182,7 +178,102 @@
   - `public`: (for frameworks only) this can be used by objects outside my framework
   - `open`:  (for frameworks only) public and objects outsidee my framework can subclass this
 
+### struct
 
+>  **class和struct的区别**
+>
+> 1. struct没有inheritance
+> 2. struct is value type, class is reference type
+>    - value type: 参数、数组成员、赋值时会被copy（系统采用COW机制）
+>    - class存在在heap区，可能有20个指针都指向一个对象
+>    - struct每次传递时都要复制，但是Swift很聪明，采用COW机制降低复制时的消耗
+
+- 如果func需要改变self的值，需要添加`mutating`
+
+### protocol
+
+- a **type** which is a declaration of <u>functionality only</u>(list of vars and functions, not an implementation)
+- Instead of forcing the caller to pass a specific class, struct ..., this can let callers pass any class/struct/../ the caller wants
+- no data storage，继承的不是data，只是functionality
+- 可以让一些有相同性质的东西不必都继承自同一个base class
+- **组成**
+  1. protocol declaration
+  2. a class, struct declaration that makes the claim to implement the protocol(如果你举手说要实现这个协议，你必须实现（1）规定的所有东西)
+  3. the cold that implement the protocol
+
+```swift
+/* Declaration */
+protocol SomeProtocol: class, InheritedProtocol1 {
+  var someProperty: Int { get set}
+  mutating func changeIt()
+  init(arg: Type)
+}
+```
+
+```swift
+/* Implement */
+class SomeClass: SuperClass, SomeProtocol, AnotherProtocol{
+  //必须实现协议里的所有东西
+  func changeIt() { /*..*/ }		//这里是class，不用加mutating，因为它是引用类型
+}
+
+struct SomeStruct: SomeProtocol, AnotherProtocol{
+  //implement
+  mutating func changeIt() {}
+  required init(...)
+}
+```
+
+```swift
+/* Usage */
+let someClass: SomeClass = SomeClass()
+var x: SomeProtocol = someClass
+x.changeIt()
+
+func SomeAndAnother(x: SomeProtocol & AnotherProtocol) {} 	//这个参数必须实现这两个protocol
+```
+
+- 如果协议里确定这个func要修改变量，要声明为`mutating`
+
+  - 如果确定这个协议不会被struct实现，则要在`:`后面第一个写class，这样协议中的func也不必添加`mutating`
+
+- 实现protocol中的`init()`需要添加`required`，这样子类就不必再去实现了
+
+- 甚至可以让Int实现protocol
+
+  ```swift
+  extension Int: SomeProtocol {
+    
+  }
+  ```
+
+- **Delegation**：bind communication between View and Controller
+
+  <img src="ScreenShots/protocoldelegation.png" alt="image-20200316230643574" width="70%;" />
+
+> 例. **Equatable**: Swift中 x == y其实就是区找这个协议，任何实现了这个协议的class/struct都可以使用==（Int类型也是如此）
+>
+> ```swift
+> protocol Equatable {
+>   static func ==(lsh: Self, rhs: Self) -> Bool	//Self代表实现这个协议的类型
+> }
+> ```
+>
+> 例. **Hashable**
+>
+> ```swift 
+> protocol Hashable: Equatable {
+>   var hashValue: Int { get }
+> }
+> ```
+>
+> **让自定义类型作为字典的key**：只需实现Hashable协议
+>
+> 例. **Sequence**：实现这个协议的data struct可以使用`for in`, `contains()`, `min()`, `filter()`,`map()`, etc.
+>
+> 例. **Collection**: 实现这个协议的data struct可以使用 `[]`, `index(of: )`, etc.
+
+<br />
 
 ## Memory Management
 
