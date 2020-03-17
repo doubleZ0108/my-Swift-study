@@ -13,7 +13,6 @@
 - **类型注解**： `var str: String`
   - 如果赋初值的话就不需要注解了
 - **类型转换**
-  - 转换为字符串的便捷方法：`\()`‘
   - 没事别用`UInt`这些奇怪的类型，跟`Int`是要转换的！
 - **类型别名**：`typealias FreshName = UInt16`
 - `print`: `print("...", terminator: "")`不换行
@@ -59,6 +58,23 @@
 
 ------
 
+## 运算符
+
+- `=`: 不再有返回值，防止C的问题
+- `===`恒等 `!==`不恒等：判断两个对象是否引用同一个对象实例
+- **Comparison Operators**
+  - 两元组类型相同，长度相同就可以比较，从左到右逐值比较（最多只吹七个元素的元组）
+  - Bool不能比较
+- **Nil Coalescing Operator**: `??`
+- **Range Operators**:
+  -  `..<`：半开区间运算符（不包含上界）
+  - `...`：闭区间运算符（包含上界）
+  - 可以省略一侧值变为单侧区间
+
+<br />
+
+------
+
 ## 控制语句
 
 ### if
@@ -72,9 +88,7 @@
 
 ### for - in
 
-- 下标范围
-  - `..<`：不包含上界
-  - `...`：包含上届
+- 
 
 ### while
 
@@ -117,9 +131,39 @@ precondition(index > 0, "Index must be greater than zero")
 
 ### 字符串
 
+- **值类型**
+
 - 用`"""  """`可以包含多行字符串（引号和换行会保留）
 
+- `+`：字符串拼接
+
+- **特殊字符**：
+
+  - **Unicode标量**：`\u{xx}`
+
+- `#"123\n"#`: 会直接输出`\n`（个人理解有点像python的r' '）
+
+- **字符串插值**：`\()`
+
+- **索引**：`String.Index`(String中每个字符可能占用不同大小的内存空间，所以不能简单的用Int索引)
+
+  ```swift
+  str[str.startIndex]
+  str[str.index(before: str.endIndex)]
+  str[str.index(str.startIndex, offserBy: 3)]
+  
+  for index in str.indices{
+    print(str[index])
+  }
+  ```
+
+- String的子串类型为`String.SubSequence`，使用上跟String没差，但是不适合长期存储，因为它重用了原String的内存空间，原String的内存空间必须为他保留
+
+
+
 ### 数组
+
+
 
 ### 字典
 
