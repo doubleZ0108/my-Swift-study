@@ -9,14 +9,50 @@
 - `let`：声明常量
 - `var`：声明变量
 - swift永远不会隐式类型转换
+- **命名规则**：可以是任何字符(符号、emoji)
+- **类型注解**： `var str: String`
+  - 如果赋初值的话就不需要注解了
 - **类型转换**
-  - to String：`\()`
+  - 转换为字符串的便捷方法：`\()`‘
+  - 没事别用`UInt`这些奇怪的类型，跟`Int`是要转换的！
+- **类型别名**：`typealias FreshName = UInt16`
+- `print`: `print("...", terminator: "")`不换行
+- **数值**
+  - 可以添加额外的0和_提高可读性：`1_000_000.000_01`
+- **布尔**
+  - 必须用Bool作为条件判断条件，不能是Int啥的
+
+### tuple
+
+- 将多个值组合成一个复合值，不要求大家是相同类型的
+
+- 常用于函数返回值
+
+- **定义**
+
+  ```swift
+  let http404Status = (404, "Not Found")
+  let http200Status = (statusCode: 200, description: "OK")
+  ```
+
+- **获取**
+
+  ```swift
+  let (statusCode, statusMessage) = http404Status
+  let (justStatusCode, _) = http404Status
+  http404Status.0		//按下标获取
+  http200Status.statusCode		//按元素名字获取
+  ```
 
 ### Optional
 
-- `?`
-- `??`
+- 用来处理可能缺失的情况（有值/nil）
+- `?`: 可能是该类型；也可能是nil（不可能是其他类型）
 - **解包**
+  - `!`: 强制unwrap，我确定这个optional缺失包含值，如果失败会导致程序崩溃
+  - `if let str = optioinStr else { str = "hello" }`
+  - `??`: `let str = optionStr ?? "hello"`
+  - `guard`
   - 方法之前加`?`，如果`?`之前的值是`nil`，则后面的东西会被忽略，这个那个表达式返回`nil`；否则optional被解包，正常执行，结果也是一个optional
 
 <br />
@@ -46,6 +82,33 @@
 
 
 
+### assert
+
+- 如果断言为假，则程序被动终止
+- 不是用于避免问题，是在调试中发现问题
+- 只在调试环境运行
+
+```swift
+assert(age > 0, "Age should greater than zero")
+
+if age > 10{
+} else if age > 0 {
+} else {
+  assertionFailure("Age should greater than 0")
+}
+```
+
+### precondition
+
+- 在调试环境和生产环境都运行
+- 当一个条件可能为假，但是继续执行代码要求条件必须为真的时候，需要使用先决条件
+
+```swift
+precondition(index > 0, "Index must be greater than zero")
+```
+
+
+
 <br />
 
 ------
@@ -66,7 +129,7 @@
 
 ------
 
-## 函数和闭包
+## 函数 & 闭包
 
 ```swift
 func foo(name: String) -> (min: Int, max: Int) { }
@@ -109,7 +172,7 @@ let arr2 = arr.sorted { $0 > $1 }
 
 ------
 
-## 协议和扩展
+## 协议 & 扩展
 
 ### protocol
 
@@ -135,6 +198,20 @@ print(-7.absValue)
 
 ## 错误处理
 
+```swift
+func funThrowAnError() throws{
+  //...
+  throw Something
+}
+
+do{
+  try funThrowAnError()
+} catch someError {
+  //...
+}
+```
+
+- `throws`
 - `throw`
 - `do - catch`
 - `try`
