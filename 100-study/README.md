@@ -1,12 +1,13 @@
-
+# Swift知识点🧀️
 
 [toc]
 
 ------
+## Magic in Swift
 
-## 变量 & 数据结构
+- Property Observe**r: 
 
-- **Property Observe**r: 
+  - 第一次使用的时候不会执行didSet，只有当第一次发生改变的时候才会执行里面的操作
 
   ```swift
   var flipCount = 0 {
@@ -23,30 +24,6 @@
 - **字符串**
 
   - 字符串中添加变量：`print("this is a \(varObj)")`
-
-- **Countable Range**: Swift中的for-in必须是一个countable range
-
-  ```swift
-  // 0.5...15.25 只是一个range，不是一个countablerange
-  for i in stride(from: 0.5, through: 15.25, by: 0.3) {}
-  for i in stride(from: 0.5, to: 15.25, by: 0.3) {}
-  ```
-
-- **Tuple**：lightweight data structure which only contain the value
-
-  ```swift
-  let x: (String, Int, Double) = ("hello", 5, 1.1)
-  let (word, number, value) = x		//元组可以给多个变量赋值
-  
-  let x: (word: String, number: Int, value: Double) = ("hello", 5, 1.1)
-  x.word		//使用元组中的属性
-  ```
-
-  - tuples as return values
-
-    ```swift
-    func getSize() -> (weight: Double, height: Double) { return (250, 80) }
-    ```
 
 - **Computed Property**
 
@@ -89,32 +66,6 @@
   }
   
   let x = 5.arc4random
-  ```
-
-- **enum**
-
-  - 可以有associated data
-
-  ```swift
-  enum FastFoodMenuItem{
-    case hamburger(numberOfPatties: Int)
-    case fries(size: FryOrderSize)
-    case drink
-  }
-  enum FryOrderSize{
-    case large
-    case small
-  }
-  
-  let menuItem: FastFoodMenuItem = .drink	//可以省略前面
-  let otherMenuItem: .drink		// x 没法推到出类型
-  
-  switch menuItem {
-    case .hamburger(let pattyCount): //这里可以使用associated data
-    case .fries: //也可以不获取
-    case .drink:
-    default: 
-  }
   ```
 
 - **Optional**
@@ -166,32 +117,12 @@
 
   - `[Int:String]`
 
-- **String**
-
-  - 不是通过Int进行索引，而是`String.Index`(有些字符不止用一位来存储)
-
-    > 🌰. 获取第四个字符
-    >
-    > ```swift
-    > str[str.index(str.startIndex, offsetBy: 3)]
-    > ```
-    >
-    > 🌰. 获取第二个词
-    >
-    > ```swift
-    > if let firstSpace = str.index(of: " "){
-    >   let secondWordIndex = str.index(firstSpace, offsetBy: 1)
-    >   let secondWofd = str[secondWordIndex..<str.endIndex]
-    > }
-    > 
-    > str.components(separatedBy: " ")[1]
-    > ```
-
-  - 将字符串转化为字符数组: `Array(str)`, 类型是`Array<Character>`
 
 
 
-## Object Oriented
+<br />
+
+## Data Structure
 
 - **Access Control**：对外承认这个东西你可以用，保证没问题，内部的实现你可以不断的更改
   - `internal`：（default）usable by any object in my app
@@ -200,6 +131,8 @@
   - `fileprivate`: accessible by any code in the .swift file
   - `public`: (for frameworks only) this can be used by objects outside my framework
   - `open`:  (for frameworks only) public and objects outsidee my framework can subclass this
+
+
 
 ### struct
 
@@ -212,6 +145,8 @@
 >    - struct每次传递时都要复制，但是Swift很聪明，采用COW机制降低复制时的消耗
 
 - 如果func需要改变self的值，需要添加`mutating`
+
+
 
 ### protocol
 
@@ -270,6 +205,17 @@ func SomeAndAnother(x: SomeProtocol & AnotherProtocol) {} 	//这个参数必须�
   }
   ```
 
+  ```swift
+  /* 🌰 扩展Collection，增加一个变量，返回集合仅有的一个元素，否则nil */
+  extension Collection {
+    var oneAndOnly: Element ? {		//Element指代集合中元素的类型
+      return count ==1 ? first : nil
+    }
+  }
+  ```
+
+  
+
 - **Delegation**：bind communication between View and Controller
 
   <img src="ScreenShots/protocoldelegation.png" alt="image-20200316230643574" width="70%;" />
@@ -295,6 +241,150 @@ func SomeAndAnother(x: SomeProtocol & AnotherProtocol) {} 	//这个参数必须�
 > 🌰. **Sequence**：实现这个协议的data struct可以使用`for in`, `contains()`, `min()`, `filter()`,`map()`, etc.
 >
 > 🌰. **Collection**: 实现这个协议的data struct可以使用 `[]`, `index(of: )`, etc.
+
+
+
+### String
+
+- 不是通过Int进行索引，而是`String.Index`(有些字符不止用一位来存储)
+
+  > 🌰. 获取第四个字符
+  >
+  > ```swift
+  > str[str.index(str.startIndex, offsetBy: 3)]
+  > ```
+  >
+  > 🌰. 获取第二个词
+  >
+  > ```swift
+  > if let firstSpace = str.index(of: " "){
+  > let secondWordIndex = str.index(firstSpace, offsetBy: 1)
+  > let secondWofd = str[secondWordIndex..<str.endIndex]
+  > }
+  > 
+  > str.components(separatedBy: " ")[1]
+  > ```
+
+- 将字符串转化为字符数组: `Array(str)`, 类型是`Array<Character>`
+
+- **NSAttributedString**: 字符串中的每一个字符于一个小Dictionary关联(objective-C's old API)
+
+  - 字典的key可能是font，color这些
+  - 许多字符可以有相同的字典
+
+  ```swift
+  let attributes: [NSAttributedStringKey: Any] = [	//这里只是举例，永远不要用Any，可以自定义个一个Enum解决
+    	.strokeColor: UIColor.orange,
+    .strokeWidth: 5.0
+  ]
+  let attributedString = NSAttributedString(string: "hello", attributes: attributes)
+  somelabel.attributedText = attributedString 	//赋给Label中的text
+  ```
+
+
+
+
+### Tuple
+
+lightweight data structure which only contain the value
+
+```swift
+let x: (String, Int, Double) = ("hello", 5, 1.1)
+let (word, number, value) = x		//元组可以给多个变量赋值
+
+let x: (word: String, number: Int, value: Double) = ("hello", 5, 1.1)
+x.word		//使用元组中的属性
+```
+
+- tuples as return values
+
+  ```swift
+  func getSize() -> (weight: Double, height: Double) { return (250, 80) }
+  ```
+
+
+
+### enum
+
+- 可以有associated data
+
+```swift
+enum FastFoodMenuItem{
+  case hamburger(numberOfPatties: Int)
+  case fries(size: FryOrderSize)
+  case drink
+}
+enum FryOrderSize{
+  case large
+  case small
+}
+
+let menuItem: FastFoodMenuItem = .drink	//可以省略前面
+let otherMenuItem: .drink		// x 没法推到出类型
+
+switch menuItem {
+  case .hamburger(let pattyCount): //这里可以使用associated data
+  case .fries: //也可以不获取
+  case .drink:
+  default: 
+}
+```
+
+
+
+### Countable Range
+
+Swift中的for-in必须是一个countable range
+
+```swift
+// 0.5...15.25 只是一个range，不是一个countablerange
+for i in stride(from: 0.5, through: 15.25, by: 0.3) {}
+for i in stride(from: 0.5, to: 15.25, by: 0.3) {}
+```
+
+
+
+### Function Types
+
+```swift
+var operation: (Double) -> Double
+operation = sqrt
+let result = operation(4.0)
+```
+
+#### Clousures
+
+- 有点类似与inline function
+
+  ```swift
+  /* 🌰 取负数 */
+  var operation: (Double) -> Double
+  operation = { -$0 }		// operation = { (num: Double) -> (Double) in return -num }	的简写
+  let result = operation(4.0)
+  ```
+
+- trailing clousure：如果一个函数的最后一个参数是闭包，可以将闭包移到函数调用的`()`后面；如果闭包是唯一的参数，可以不写`()`
+
+  ```swift
+  let arr1 = arr.map({ -$0 })
+  let arr2 = arr.map() { 1.0 / $0 }
+  let arr3 = arr.map { String($0) }
+  ```
+
+- 用于property initialization: 尤其适合lazy
+
+  ```swift
+  var someProperty: Type = {
+    // calculate
+    return someValue
+  }()
+  ```
+
+- clousure是reference type，它会捕获局部变量供自己使用，这些surrounding code也会被带到heap中
+
+
+
+
 
 <br />
 
