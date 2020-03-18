@@ -21,7 +21,105 @@
 - **布尔**
   - 必须用Bool作为条件判断条件，不能是Int啥的
 
-### tuple
+<br />
+
+------
+
+## 运算符
+
+- `=`: 不再有返回值，防止C的问题
+- `===`恒等 `!==`不恒等：判断两个对象是否引用同一个对象实例
+- **Comparison Operators**
+  - 两元组类型相同，长度相同就可以比较，从左到右逐值比较（最多只吹七个元素的元组）
+  - Bool不能比较
+- **Nil Coalescing Operator**: `??`
+- **Range Operators**:
+  -  `..<`：半开区间运算符（不包含上界）
+  - `...`：闭区间运算符（包含上界）
+  - 可以省略一侧值变为单侧区间
+
+<br />
+
+------
+
+## 数据类型
+
+### Array
+
+- 有序同类型数据集合
+
+- `[Element]` <-> `Array<Element>`
+
+- **初始化**
+
+  - `Array(repeating: 1, count: 3)`
+
+- **遍历**
+
+  - 同时需要数据和索引
+
+    ```swift
+    for (index, value) in arr.enumerated() {}
+    ```
+
+    
+
+### Set
+
+- 无序无重复数据集合
+
+- 类型需要是Hashable
+
+  - Hashable: `hashValue`
+  - Equatable: `==`
+
+- **按特定顺序遍历**
+
+  ```swift
+  for s in numSet.sorted() {}
+  ```
+
+- **集合运算**
+
+  - `intersection()`: 交
+  - `union()`：并
+  - `symmetricDifference()`：异或
+  - `subtracting()`：差
+  - `==`：两集合包含的值完全相同
+  - `isSubset(of:)`
+  - `isSuperset(of:)`
+  - `isStrictSubset(of:)`：子集，并且二者不相等
+  - `isDisjoint(with:)`：没有交集
+
+
+
+### Dictionary
+
+- 无序键值对（键的顺序和值的顺序不是同步的）
+
+- `Dictionary<Key, Value>` <-> `[Key: Value]`
+
+- Key需要Hashable
+
+- **清空字典**：`[:]`
+
+- 读字典里的value返回值是optional
+
+- **移除**：`removeValue(forKey:)` || `dict["PKG"] = nil`
+
+- **遍历**
+
+  ```swift
+  for (key, value) in dict {}
+  for key in dict.keys {}
+  for value in dict.values {}
+  ```
+
+  
+
+
+
+### tuple元组
 
 - 将多个值组合成一个复合值，不要求大家是相同类型的
 
@@ -43,6 +141,8 @@
   http200Status.statusCode		//按元素名字获取
   ```
 
+
+
 ### Optional
 
 - 用来处理可能缺失的情况（有值/nil）
@@ -54,22 +154,37 @@
   - `guard`
   - 方法之前加`?`，如果`?`之前的值是`nil`，则后面的东西会被忽略，这个那个表达式返回`nil`；否则optional被解包，正常执行，结果也是一个optional
 
-<br />
 
-------
 
-## 运算符
+### 字符串
 
-- `=`: 不再有返回值，防止C的问题
-- `===`恒等 `!==`不恒等：判断两个对象是否引用同一个对象实例
-- **Comparison Operators**
-  - 两元组类型相同，长度相同就可以比较，从左到右逐值比较（最多只吹七个元素的元组）
-  - Bool不能比较
-- **Nil Coalescing Operator**: `??`
-- **Range Operators**:
-  -  `..<`：半开区间运算符（不包含上界）
-  - `...`：闭区间运算符（包含上界）
-  - 可以省略一侧值变为单侧区间
+- **值类型**
+
+- 用`"""  """`可以包含多行字符串（引号和换行会保留）
+
+- `+`：字符串拼接
+
+- **特殊字符**：
+
+  - **Unicode标量**：`\u{xx}`
+
+- `#"123\n"#`: 会直接输出`\n`（个人理解有点像python的r' '）
+
+- **字符串插值**：`\()`
+
+- **索引**：`String.Index`(String中每个字符可能占用不同大小的内存空间，所以不能简单的用Int索引)
+
+  ```swift
+  str[str.startIndex]
+  str[str.index(before: str.endIndex)]
+  str[str.index(str.startIndex, offserBy: 3)]
+  
+  for index in str.indices{
+    print(str[index])
+  }
+  ```
+
+- String的子串类型为`String.SubSequence`，使用上跟String没差，但是不适合长期存储，因为它重用了原String的内存空间，原String的内存空间必须为他保留
 
 <br />
 
@@ -120,54 +235,6 @@ if age > 10{
 ```swift
 precondition(index > 0, "Index must be greater than zero")
 ```
-
-
-
-<br />
-
-------
-
-## 数据类型
-
-### 字符串
-
-- **值类型**
-
-- 用`"""  """`可以包含多行字符串（引号和换行会保留）
-
-- `+`：字符串拼接
-
-- **特殊字符**：
-
-  - **Unicode标量**：`\u{xx}`
-
-- `#"123\n"#`: 会直接输出`\n`（个人理解有点像python的r' '）
-
-- **字符串插值**：`\()`
-
-- **索引**：`String.Index`(String中每个字符可能占用不同大小的内存空间，所以不能简单的用Int索引)
-
-  ```swift
-  str[str.startIndex]
-  str[str.index(before: str.endIndex)]
-  str[str.index(str.startIndex, offserBy: 3)]
-  
-  for index in str.indices{
-    print(str[index])
-  }
-  ```
-
-- String的子串类型为`String.SubSequence`，使用上跟String没差，但是不适合长期存储，因为它重用了原String的内存空间，原String的内存空间必须为他保留
-
-
-
-### 数组
-
-
-
-### 字典
-
-- `[String: Int]`
 
 <br />
 
