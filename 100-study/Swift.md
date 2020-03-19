@@ -186,6 +186,54 @@
 
 - String的子串类型为`String.SubSequence`，使用上跟String没差，但是不适合长期存储，因为它重用了原String的内存空间，原String的内存空间必须为他保留
 
+### 枚举
+
+```swift
+enum Direction{
+  case north
+  case south
+  case east
+  case west
+}
+
+var dir = Direction.north
+switch dir{
+  case .north:	//一旦明确类型了，就可以直接使用值了
+  	//...
+  default:
+  	//...
+}
+```
+
+- **遍历**：让枚举遵循`CaseIterable` 协议，`allCases`包含枚举的所有成员
+
+  ```swift
+  enum Direction: CaseIterable{
+    case north, south, east, west
+  }
+  
+  for dir in Direction.allClass {}
+  ```
+
+- **关联值**
+
+  ```swift
+  enum Apple{
+    case iPhone(Int)
+    case Mac(String, Int)
+  }
+  var product = Apple.iPhone(6)
+  
+  switch product{
+    case .iPhone(let series):
+    	//...
+    case let .Mac (name, id):
+    	//...
+  }
+  ```
+
+- 递归枚举：略
+
 <br />
 
 ------
@@ -456,7 +504,7 @@ precondition(index > 0, "Index must be greater than zero")
 
   > 例. 很多启动异步操作的函数接受一个闭包参数作为 completion handler。这类函数会在异步操作开始之后立刻返回，但是闭包直到异步操作结束后才会被调用。在这种情况下，闭包需要“逃逸”出函数，因为闭包需要在函数返回之后被调用
 
-- **`@autoclouser` 自动闭包**：略
+- `@autoclouser` 自动闭包：略
 
 <br />
 
