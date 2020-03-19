@@ -324,19 +324,62 @@ precondition(index > 0, "Index must be greater than zero")
 
 ## 函数 & 闭包
 
-```swift
-func foo(name: String) -> (min: Int, max: Int) { }
-
-let result = foo("zz")
-print(result.min)
-print(result.2)		//max
-```
-
 ### 函数
 
-- 参数标签：
+- **参数标签**：
+
   - `on day: String`
   - `_ person: String`：不使用参数标签
+
+  ```swift
+  func greet(name: String, from hometown: String){
+    hometown	//函数内部使用名字
+  }
+  greet(name: "zz", from: "Tonghua")	//调用函数的时候使用标签
+  ```
+
+- **返回值**
+
+  - 要返回多个值可以将齐组成元组
+
+    ```swift
+    func foo(name: String) -> (min: Int, max: Int) { }
+    
+    let result = foo("zz")
+    print(result.min)
+    print(result.2)		//max
+    ```
+
+  > `(Int, Int)?` 整个元组都可能是nil
+  >
+  > `(Int?, Int?)` 元组一定是有的，其中的值可能没有
+
+- **可变参数**：一个函数最多只能有一个可变参数
+
+  ```swift
+  func sum(_ nums: Double...){}
+  sum(1.1,3.1,5.6)
+  ```
+
+- `inout`: 类似C的传reference，不能传常量，不能有默认值
+
+  ```swift
+  func swap(a: inout Int, b: inout Int){
+    let buf = a
+    a = b
+    b = buf
+  }
+  var x = 1, y = 2
+  swap(&x, &y)
+  ```
+
+- **函数类型**: 可以作为参数/返回值
+
+  ```swift
+  var funcInput2IntReturnInt: (Int, Int) -> Int
+  ```
+
+  
 
 ### 闭包
 
