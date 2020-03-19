@@ -190,7 +190,7 @@
 
 ------
 
-## 控制语句
+## 控制流
 
 ### if
 
@@ -198,16 +198,87 @@
 
 ### switch
 
+```swift
+switch num{
+  case 0:
+  	//...
+  case 1, 2:		//复合
+  	//...
+  case 3..<5:		//区间
+  	//...
+}
+
+/* switch + tuple */
+let point = (1,2)
+switch point{
+  case (0, 0):
+  	//...
+  case (1, _):
+  	//...
+}
+```
+
 - case语句会自动break出去，不会贯穿
+
+- 每条case后必须有语句
+
 - 多值case语句直接用`,`隔开就好
+
+- 完备性：必须覆盖该类型的所有值，每一次都写`default`是个好习惯
+
+- 允许多个case匹配同一个值，但只有第一个会被匹配
+
+- **值绑定**
+
+  ```swift
+  switch point{
+    case (let x, 0):
+    	//use x
+    default (let x, let y):
+    	//...
+  }
+  ```
+
+- `where`: filter for switch
+
+  ```swift
+  switch point{
+    case let (x,y) where x == y:
+    	//...
+    default let (x,y):
+    	//...
+  }
+  ```
+
+### 控制转移语句
+
+- `continue`
+
+- `break`
+
+- `fallthrough`: 让switch的case可以贯穿到下一个（不匹配下一个case的匹配，跟C语法相同）
+
+- `label`
+
+  ```swift
+  myLabel: while conditioin{
+    //...
+    break myLabel
+  }
+  ```
+
+  
 
 ### for - in
 
-- 
+- `stride(fron:to:by:)`不包含右端点
+- `stride(from:through:by:)`闭区间
 
 ### while
 
 ### repeat - while
+
+- 先循环再判断条件
 
 
 
@@ -235,6 +306,17 @@ if age > 10{
 ```swift
 precondition(index > 0, "Index must be greater than zero")
 ```
+
+### guard
+
+- 只有guard为true才能继续执行，否则执行else的代码
+
+  ```swift
+  guard let name = someFunc() else {
+    print("name cannot be optional")
+    return
+  }
+  ```
 
 <br />
 
