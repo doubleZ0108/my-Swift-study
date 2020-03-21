@@ -693,7 +693,42 @@ precondition(index > 0, "Index must be greater than zero")
   }
   ```
 
-  
+### 方法
+
+- **实例方法**
+
+  - `mutating`：struct默认情况下是不能修改属性的
+
+    - 事实实现上是直接把self换掉了，结束后又重新赋给self
+
+    ```swift
+    struct Point{
+      var x = 0, y = 0
+      mutating func moveBy(x deltaX: Int, y deltaY: Int) {
+        self = Point(x: x+deltaX, y: y+deltaY)
+      }
+    }
+    ```
+
+    - 所以enum才能这么写
+
+    ```swift
+    enum Apple{
+      case iPhone, iPad
+      mutating func next() {
+        switch self{
+          case .iPhone:
+          	self = .iPad
+          case .iPad:
+          	self = .iPhone
+        }
+      }
+    }
+    ```
+
+- **static 类型方法**
+
+  - 同样可以用`class`代替`static`，允许子类重写父类该方法
 
 
 
