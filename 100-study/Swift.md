@@ -232,6 +232,19 @@ switch dir{
   }
   ```
 
+- **内部方法**
+
+  ```swift
+  enum Direction{
+    case north, south, east, west
+    mutating func turnNorth(){
+      self = .north
+    }
+  }
+  ```
+
+- **<u>值类型</u>**
+
 - 递归枚举：略
 
 <br />
@@ -409,7 +422,7 @@ precondition(index > 0, "Index must be greater than zero")
   sum(1.1,3.1,5.6)
   ```
 
-- `inout`: 类似C的传reference，不能传常量，不能有默认值
+- `inout`: 类似C的传reference，不能传常量，不能有默认值（如果参数类型是class，则可以直接传递引用）
 
   ```swift
   func swap(a: inout Int, b: inout Int){
@@ -513,14 +526,106 @@ precondition(index > 0, "Index must be greater than zero")
 ## 面向对象
 
 - **构造函数**: `init()`
+
   1. 设置子类声明的属性值
   2. 调用父类的init
   3. getter，setter
+
 - **析构函数**: `deinit()`
+
 - **重写父类的方法**：`override`
+
 - **计算属性**:
+
   - `get`
   - `set`: 默认新值名字为`newValue`, 可以在set后面加括号显示起新名字
+
+  > **【class和struct的比较】**
+  >
+  > class
+  >
+  > - **<u>引用类型</u>**
+  > - 继承
+  > - 类型转换允许再运行时检查和解释类实例的类型
+  > - 解析器允许类实例释放它分配的资源
+  > - 引用计数允许对一个类的多次引用
+  >
+  > struct
+  >
+  > - 有默认的逐成员构造器
+  > - **<u>值类型</u>**
+
+- **恒等运算符**：判断两个东西是否引用同一个类实例
+
+  - `===`
+  - `!==`
+
+
+
+### 属性
+
+- **存储属性**
+
+  - 存储在class或struct实例中的常量或变量
+  - 值类型的实例被声明位常量的时候，它的所有属性也都变成常量
+  - 引用类型的实例赋给常量后，仍然可以修改改实例的`var`属性
+  - **`lazy` 延时加载**: 第一次被调用的时候才会计算其初始值
+    - 必须是`var`（常量在构造完成前必须有初始值，无法延时加载）
+    - 如果一个lazy在没有初始化时就同时被多个线程访问，则无法保证该属性只会被初始化一次
+
+- **计算属性**
+
+  - 不直接存储值，而是提供一个`getter`和一个可选的`setter`，来简洁获取和舍弃属性值
+
+  - 当某个属性是依照其他属性计算出来的时候，没必要存储这个属性值，要用的时候计算一份就好了
+
+  - `set`：省略名称的话默认名称为`newValue`
+
+    ```swift
+    struct School{
+      var total: Int
+      var amount: Int
+      var avg{
+        get{
+          return total / amount
+        }
+        set{
+          total = newValue * amount;
+        }
+      }
+    }
+    ```
+
+  - **只读计算属性**：只有getter（⚠️这个只读不能声明为let）
+
+    ```swift
+    struct School{
+      var avg: Double{
+        total / amount		//只有一个表达式的话可以省略return
+      }
+    }
+    ```
+
+- **属性观察器**：每次属性被设置新值时会调用，即使新值和当前值相同
+
+  - 不能给lazy添加
+
+  - 可以在子类中重写继承过来属性的观察器
+
+  - `willSet`：在新值被设置之前调用
+
+    - 会将新的`newValue`作为常量传入
+
+  - `didSet`：在新值被设置之后调用
+
+    - 会将旧的`oldValue`作为常量传入
+    - 如果在`didSet`中再次对该属性赋值，则新值会覆盖旧值
+
+    > 通过in-out方式传入函数，属性观察器也会调用，因为in-out采用拷入拷出内存模式：在函数内部使用的是参数的copy，函数结束后，后对参数重新赋值
+
+- **属性包装器**
+
+
 
 ------
 
