@@ -623,7 +623,77 @@ precondition(index > 0, "Index must be greater than zero")
 
     > 通过in-out方式传入函数，属性观察器也会调用，因为in-out采用拷入拷出内存模式：在函数内部使用的是参数的copy，函数结束后，后对参数重新赋值
 
-- **属性包装器**
+- **属性包装器**: 
+
+  - 有时候必须要给每个属性添加同样的逻辑代码，可以使用属性包装器，只需编写一次管理代码，实现复用
+  - 要定义`wrappedValue`属性
+
+  ```swift
+  @propertyWrapper
+  struct TwelevOrLess{
+    private var num: Int = 0
+    var wrappedValue: Int{
+      get { return num }
+      set { num = min(newValue, 12) }
+    }
+  }
+  
+  @TwelveOrLess var height: Int
+  ```
+
+  ```swift
+  @propertyWrapper
+  struct SmallNumber {
+    private var max: Int
+    private var num: Int
+    
+    var wrappedValue: Int {
+      get { return num }
+      set { num = min(newValue, max) }
+    }
+    
+    init(){
+      max = 12
+      num = 1
+    }
+    init(wrappedValue: Int){
+      max = 12
+      num = min(wrappedValue, max)
+    }
+    init(wrappedValue: Int, max: Int){
+      self.max = max
+      num = min(wrappedValue, max)
+    }
+  }
+  
+  @SmallNumber var width: Int
+  @SmallNumber(wrappedValue: 2, max: 10) var height: Int
+  ```
+
+  - 从属性包装器中呈现一个值：包装器里可以有一个值，外界使用`$height`即可访问这个值
+
+- **全局变量**：
+
+  - 全局的常量和变量都是延迟计算的
+
+- **`static` 类型属性｜静态属性**
+
+  - 可以改用`class`关键词使得子类可以对父类的实现进行重写
+
+  ```swift
+  struct Stu {
+    static var total: Int {
+      //...
+      return xx
+    }
+    class var amount: Int {
+      //...
+      return yy
+    }
+  }
+  ```
+
+  
 
 
 
