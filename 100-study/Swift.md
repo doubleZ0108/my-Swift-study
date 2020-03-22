@@ -761,7 +761,20 @@ subscript(index: Int) -> Int {
   let n = Student[4]
   ```
 
-  
+
+
+### 继承
+
+- `override`
+  - **方法**：在方法`someMethod()`的重写中，可以通过`super.someMethod()`调用父类的版本
+  - **属性**：可以重写属性，提供定制的getter和setter或添加观察器（子类并不知道继承来的属性是存储属性还是计算属性）
+    - 如果重写属性中提供了setter，那么一定也要提供getter，如果没啥更改，可以直接写`return super.someProperty`
+  - **`final` 防止重写**
+    - `final class`
+    - `final var`
+    - `final func`
+    - `final static func`
+    - `final subscript`
 
 ------
 
