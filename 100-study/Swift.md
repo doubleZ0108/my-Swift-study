@@ -732,6 +732,37 @@ precondition(index > 0, "Index must be greater than zero")
 
 
 
+### 下标
+
+```swift
+subscript(index: Int) -> Int {
+  get {
+    return xx
+  }
+  set {
+    //...
+  }
+}
+```
+
+- 可以接受任意数量参数，也可以返回任何类型
+
+- 不能使用in-out参数
+
+- 可以添加`static`使得变为类型下标
+
+  ```swift
+  struct Student{
+    static subscript(index: Int) -> Int{
+      xx
+    }
+  }
+  
+  let n = Student[4]
+  ```
+
+  
+
 ------
 
 ## 协议 & 扩展
