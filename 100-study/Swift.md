@@ -1063,8 +1063,9 @@ class SomeClass: SomeSuperClass, Protocol1, Protocol2 { }	//父类要写在前�
 
 - 为现有的类型添加功能，使用这个类型的人可以获得某些技能或需要遵守某个协议
 - **逆向建模**：不需要访问扩展类型源代码就可以完成扩展
-  - 可以添加新功能，但不能重写已经存在的功能
-
+  
+- 可以添加新功能，但不能重写已经存在的功能
+  
 - **扩展计算型属性**：只读属性，省略了get
 
   ```swift
@@ -1220,18 +1221,56 @@ do{
 ## 泛型
 
 ```swift
-func foo<Item>(_ item: Item) -> Item {}
+func foo<T>(_ t: T) -> T {}
 ```
 
-- `where`: 制定对类型的需求
+- **泛型扩展**：对泛型类型进行扩展时，不需要提供类型参数列表，直接用`Element`代替就好
+
+- **类型约束**
 
   ```swift
-  //限制必须有某个特定的父类
-  //限定两个类型必须是相同的
-  //限定某个类必须实现某个协议
-  func fooRestraint<T: Sequence, U: Sequence(_ lhs: T, _ rhs: U) -> Bool
-  	where T.Element: Equatable, T.Element == U.Element
-  { }
+  func someFunction<T: SomeClass, U: SomeProtocol>(someT: T, someU: U) { }
   ```
 
-  
+  - `where`: 制定对类型的需求
+
+    ```swift
+    //限制必须有某个特定的父类
+    //限定两个类型必须是相同的
+    //限定某个类必须实现某个协议
+    func fooRestraint<T: Sequence, U: Sequence(_ lhs: T, _ rhs: U) -> Bool
+    	where T.Element: Equatable, T.Element == U.Element
+    { }
+    ```
+
+- **`associatedtype`关联类型**：定义协议时，关联类型为协议中的某个类型提供占位符
+
+  ```swift
+  protocol Container{
+    associatedtype Item
+    associatedtype Nums: Equatable  //给关联值添加约束
+  }
+  ```
+
+> 🌰
+>
+> ```swift
+> extension Stack where Element: Equatable{ }
+> ```
+>
+> ```swift
+> extension Container where Item == Double {}
+> ```
+>
+> ```swift
+> //泛型参数必须遵循Sequence协议
+> //Indices中所有元素都是Int
+> extension Container {
+>   subscript<Indices: Sequence>(indices: Indices) -> [Item]
+>   	where Indices.Iterator.Element == Int {
+>       
+>     }
+> }
+> ```
+>
+> 
