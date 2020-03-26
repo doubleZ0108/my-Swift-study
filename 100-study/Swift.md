@@ -776,6 +776,166 @@ subscript(index: Int) -> Int {
     - `final static func`
     - `final subscript`
 
+
+
+### 构造
+
+```swift
+init(){
+  
+}
+```
+
+- 创建实例时，存储类型属性必须初始化
+
+- 必须通过实参标签调用构造函数
+
+  - `Color(0.0, 1.0)`会编译出错，要写成`Color(red: 0.0, green: 1.0)`
+  - 如果非要这么写那就要使用`_`默认形参标签
+
+- 可选类型自动会初始化为`nil`
+
+- 构造函数中可以给常量属性赋值（但是也只能有一次）
+
+- struct提供逐一成员构造器
+
+  ```swift
+  struct Size{
+    var width = 0, height = 0
+  }
+  
+  let v1 = Size(width: 2, height: 3)
+  let v2 = Size(width: 3)
+  let v3 = Size(height: 5)
+  let v4 = Size()
+  ```
+
+- **struct构造器代理**：`self.init`中可以调用其他init
+
+- **构造的继承**：
+
+  - **指定构造器**
+
+  - **便利构造器**：辅助性质的，一般创建特殊用途或特定输入的实例
+
+    ```swift
+    init(name: String){
+      self.name = name
+    }
+    convenience init() {
+      self.init(name: "[Unnamed]")
+    }
+    ```
+
+    <img src="https://docs.swift.org/swift-book/_images/initializerDelegation01_2x.png" alt="img" width="50%;" />
+
+    1. 指定构造器必须调用*直接父类*的指定构造器
+    2. 便利构造器必须调用*同类*中的其他构造器
+    3. 便利构造器最后必须调用指定构造器
+
+    （指定构造器向上代理；便利构造器横向代理）
+
+  - **两段式构造**：第一阶段类中的每个存储属性赋初始值，当每个存储属性的初始值被赋值后第二阶段开始，它给每个类一次机会，在新实例准备使用之前进一步自定义存储型属性（四种安全检查，略～；阶段一二，略～）
+
+  - **子类默认不会继承父类的构造器**，重写时要修饰`override`，即使重写的是系统自动提供的默认构造函数
+
+    ```swift
+    class Deived: Base{
+      override init(){
+        super.init()
+        //...
+      }
+    }
+    ```
+
+    - 子类的init中不能修改继承来的常量
+
+- **可失败构造器**：传入无效形参时返回`nil`
+
+  - 构造器不支持返回值，这里是特殊用法
+
+  ```swift
+  struct Foo{
+    let name: String
+    init?(name: String){
+      if name.isEmpty{	//如果字符串为空则构造失败
+        return nil
+      }
+      self.name = name
+    }
+  }
+  
+  if let foo = Foo(name: ""){
+    //success
+  } else {
+    // fail
+  }
+  ```
+
+  - enum的特殊用法: 带原始值的枚举类型默认有可失败的构造器
+
+    ```swift
+    enum Office{
+      case Word, Excel
+      init?(symbol: Character){
+        switch symbol{
+          case "W":
+          	self = .Word
+          case "Excel":
+          	self = .Excel
+          default:
+          	return nil
+        }
+      }
+    }
+    
+    enum Office: Character{
+      case Word = "W", Excel = "E"
+    }
+    
+    if let office = Office(rawValue: "W") {} else {}
+    ```
+
+  - `init!`略
+
+- **`required`必要构造器**： 子类必须实现该构造器
+
+  ```swift
+  class Base{
+    required init() {}
+  }
+  
+  class Drived: Base{
+    required init() {}	//不需要override，但需要required
+  }
+  ```
+
+- **通过闭包设置属性的默认值**：在闭包执行时，其他东西还没初始化，因此不能访问其他任何属性、方法，也不能使用self
+
+  ```swift
+  /* 8*8 的西洋跳棋棋盘*/
+  struct Chessboard{
+    let boardColors: [Bool] = {
+      var temBoard = [Bool]()
+      var isBlack = false
+      for i in 1...8{
+        for j in 1...8{
+          temBoard.append(isBlack)
+          isBlack = !isBlack
+        }
+  			isBlack = !isBlack
+      }
+      return tempBoard
+    }()			//注意这个()
+  }
+  ```
+
+  
+
+### 析构
+
+
+
 ------
 
 ## 协议 & 扩展
