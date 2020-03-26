@@ -963,6 +963,100 @@ deinit{
 
 ### protocol
 
+定义了一个蓝图，规定了一些任务，想要遵循我这个协议，就要完成我规定的所有任务
+
+```swift
+protocol SomeProtocol { }
+class SomeClass: SomeSuperClass, Protocol1, Protocol2 { }	//父类要写在前面
+```
+
+- 协议不存储，只是规定
+
+- **属性**
+
+  ```swift
+  protocol SomeProtocol {
+    var num: Int { get set}
+    var id: Int{ get }
+    static var staticvar: Int { get set }
+  }
+  ```
+
+- **方法**
+
+  - 协议中的方法不能有默认参数
+
+  ```swift
+  protocol SomeProtocol{
+    func foo() -> Double
+  }
+  ```
+
+  - 如果方法要改变属性，class遵循协议的话不需要加mutating，struct就需要
+
+- **构造函数**
+
+  - 需要添加`required`
+  - 如果父类页游该构造器，则需要添加`required override`
+
+- **协议作为类型**
+
+  ```swift
+  /*
+  RandomNumberGenerator是一个协议类型
+  因此所有遵循该协议的实例都可以作为变量
+  */
+  class Dice{
+    let generator: RandomNumberGenerator
+    func roll() -> Int{
+      return generator.random()
+    }
+  }
+  ```
+
+- **委托**: 定义协议封装那些需要被委托的功能，这样能确保遵循协议的类能提供这些功能（略～）
+
+- 在extension中添加协议可以达到，在不知道原来类的源码情况下让这个类完整的实现某个protocol
+
+- **有条件的遵循协议**：
+
+  - 当泛型在某些条件下满足协议
+
+    ```swift
+    /* 当Array中的类型遵循这个协议的时候让Array也遵循这个协议 */
+    extension Array: xxProtocol where Element: xxProtocol { }
+    ```
+
+- 当多个类都遵循某个protocol时，可以遍历这样的数组，类型时这个protocol
+
+- **协议的继承**：遵循我的协议，就也要遵循我已经遵循了的协议
+
+  - **类专属的协议**: 通过添加`AnyObject`到协议的继承列表，就可以限制协议只能被类类型采纳
+
+    ```swift
+    protocol SomeClassOnlyProtocol: AnyObject, SomeInheritedProtocol { }
+    ```
+
+    > 当协议定义的要求需要遵循协议的类型必须是引用语义而非值语义时，应该采用类类型专属协议
+
+- **协议合成**：要求一个类型同时遵循多个协议
+
+  - 这样不关心参数类型，只关注是否遵循了这两个protocol
+
+  ```swift
+  func TongjiBoy(people: TJUer & IsBoy) {}	//二者都是协议
+  ```
+
+- **检查协议一致性**：
+
+  - `is`：检查某个实例是否遵循某个协议
+  - `as?`：optional协议 or nil
+  - `as!`
+
+- 可选协议要求（略～Object-C的遗留物）
+
+- 协议扩展
+
 
 
 ### extension
@@ -970,14 +1064,6 @@ deinit{
 - 为现有的类型添加功能，使用这个类型的人可以获得某些技能或需要遵守某个协议
 - **逆向建模**：不需要访问扩展类型源代码就可以完成扩展
   - 可以添加新功能，但不能重写已经存在的功能
-
-```swift
-extension Int {
-  var absValue { return abs(self) }
-}
-
-print(-7.absValue)
-```
 
 - **扩展计算型属性**：只读属性，省略了get
 
