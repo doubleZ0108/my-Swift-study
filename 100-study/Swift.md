@@ -247,6 +247,18 @@ switch dir{
 
 - 递归枚举：略
 
+
+
+### 类型转换
+
+- **`is`检查类型**: 检查某个实例是否是特定子类型
+- **`as`向下转型**：可能会失败
+  - `as?`
+  - `as!`
+- **不确定类型**：一般情况别用
+  - `Any`：任何类型，包括函数类型
+  - `AnyObject`：任何类类型的实例
+
 <br />
 
 ------
@@ -956,6 +968,8 @@ deinit{
 ### extension
 
 - 为现有的类型添加功能，使用这个类型的人可以获得某些技能或需要遵守某个协议
+- **逆向建模**：不需要访问扩展类型源代码就可以完成扩展
+  - 可以添加新功能，但不能重写已经存在的功能
 
 ```swift
 extension Int {
@@ -965,7 +979,83 @@ extension Int {
 print(-7.absValue)
 ```
 
+- **扩展计算型属性**：只读属性，省略了get
 
+  ```swift
+  extension Double{
+    var km: Double { return self * 1_000.0 }
+    var m: Double { return self }
+    var cm: Double { return self / 100.0 }
+  }
+  let v1 = 25.4.km + 123.m
+  ```
+
+- **扩展构造器**
+
+- **扩展方法**
+
+  ```swift
+  extension Int {
+    func repetitions(task: () -> Void){
+      for _ in 0..<self{
+        task()
+      }
+    }
+  }
+  3.repetitions{
+    print("hello")
+  }
+  ```
+
+- **扩展可变实例方法**：修改实例本身
+
+  ```swift
+  extension Int{
+    mutating func square(){
+      self = self * self
+    }
+  }
+  let v = 3.square()
+  ```
+
+- **扩展下标**
+
+  ```swift
+  /* 例. 返回整数从右开始的第n位 */
+  extension Int{
+    subscript(index: Int) -> Int {
+      var decimalBase = 1
+      for _ in 0..<index {
+         decimalBase *= 10
+      }
+      return (self / decimalBase) % 10
+    }
+  }
+  let v = 4567890[3]
+  ```
+
+- **扩展嵌套类型**
+
+  ```swift
+  extension Int {
+    enum Kind {
+      case negative, zero, positive
+    }
+    var king: Kind{
+      switch self {
+        case 0:
+        	return .zero
+        case let x where x > 0:
+        	return .positive
+        default:
+        	return .negative
+      }
+    }
+  }
+  let v = 34.kind
+  ```
+
+  
 
 <br />
 
