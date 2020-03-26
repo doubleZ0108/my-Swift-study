@@ -943,6 +943,8 @@ deinit{
 - 只针对类类型，在实例被释放之前调用
 - 析构函数中可以访问实例的所有属性
 
+
+
 ------
 
 ## 协议 & 扩展
@@ -972,7 +974,7 @@ print(-7.absValue)
 ## 错误处理
 
 ```swift
-func funThrowAnError() throws{
+func funThrowAnError() throws -> String{
   //...
   throw Something
 }
@@ -984,13 +986,56 @@ do{
 }
 ```
 
-- `throws`
-- `throw`
-- `do - catch`
+- **表示错误**: 错误常用遵循`Error`协议类型的值表示
+
+  ```swift
+  enum xxxError: Error{
+    case invalidSelection
+    case outOfStock
+  }
+  
+  throw xxxError.outOfStock
+  ```
+
+- `throws`: 生命函数可能会抛出错误
+
+- `throw`: 丢出错误
+
+- `do - catch`：处理错误
+
 - `try`
+
 - `try?`：如果抛出错误则结果为`nil`，否则是optional
+
+  ```swift
+  func fetchData() -> Data?{
+    if let data = try? fetchDataFromDisk() { return data }
+    return nil
+  }
+  ```
+
+- `try!`：自己知道这个函数肯定不会抛出错误，类似于强行解包，如果真的抛出错误，会运行时错误
+
 - `defer`: 函数返回前最后执行的代码（一定会执行）
+  
   - 可以写在函数调用之初就要执行的代码之后
+  
+  ```swift
+  func Foo(filename: String) throws {
+    let file = open(filename)
+    defer{		//作用域的最后才会被执行
+      close(file)
+    }
+    
+    while let line = try file.readline(){
+      //...
+    }
+    
+    // close(file)  会在这里被调用
+  }
+  ```
+  
+  
 
 <br />
 
